@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Item } from "./components/Item";
-import { BackDrop } from "../../components/styled";
+import { Item } from "../../components/Item";
+import { BackDrop } from "../../../../components";
 import { createStructuredSelector } from "reselect";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 
-import { loadingSelector, errorSelector, listItemsSelector } from "../../services/item/item.selectors";
-import { listItems } from "../../services/item";
+import { loadingSelector, errorSelector, listItemsSelector } from "../../../../services/item/item.selectors";
+import { listItems } from "../../../../services/item";
 import { connect } from "react-redux";
-import ErrorBoundary from "../../components/ErrorBoundary";
+import ErrorBoundary from "../../../../components/ErrorBoundary";
 
 export const TrendingItemPageWrapper = styled.div`
 	background-color: #f1f1f1 !important;
@@ -98,6 +98,9 @@ export class TrendingItemPage extends React.PureComponent {
 				<ErrorBoundary>
 					<BlockUi tag="div" blocking={isFetching}>
 						<TrendingItemPageWrapper>
+							<Header>
+								
+							</Header>
 							<BackDrop show={showBackDrop} />
 							<ListItemsWrapper>
 								{listItems.map((item, index) => (

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { ThemeContext } from "./../TrendingItemPage";
+import { ThemeContext } from "../NasaItemListPage";
 
 const getImgStyle = isFullscreen => {
 	if (isFullscreen) {
@@ -28,56 +28,16 @@ const S = {
 	`
 };
 
-S.ItemImageLoader = styled.div`
-	display: inline-block;
-	width: 64px;
-	height: 64px;
-	z-index: 99999;
-	position: absolute;
-	top: 30%;
-	left: 40%;
-
-	&:after {
-		content: " ";
-		display: block;
-		width: 46px;
-		height: 46px;
-		margin: 1px;
-		border-radius: 50%;
-		border: 5px solid black;
-		border-color: black transparent black transparent;
-		animation: lds-dual-ring 1.2s linear infinite;
-	}
-
-	@keyframes lds-dual-ring {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-`;
 
 export const ItemImage = ({ url, alt }) => {
 	// TODO: we can use useReducer instead by useState if it is complex state
   const [isFullscreen, setIsFullscreen] = useState(false);
-  /* eslint-disable */
-	const [isLoaded, setIsLoaded] = useState(true);
+	const [isLoaded] = useState(true);
 	const { handleToggleBackDrop } = useContext(ThemeContext);
-
-	/** TODO: Use this code when you want to show backdrop after Image rendered */
-	// useEffect(() => {
-	// 	handleToggleBackDrop();
-	// });
 	const handleImgClick = () => {
 		handleToggleBackDrop();
 		setIsFullscreen(!isFullscreen);
   };
-  // TODO: handle lazy load image
-	// const handleLoading = () => {
-	// 	setIsLoaded(true);
-	// };
 
 	return (
 		<div style={{ height: 200 }}>

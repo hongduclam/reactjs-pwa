@@ -1,57 +1,153 @@
 import React from "react";
 import styled from "styled-components";
 
-const IconWrapper = styled.div`
-	> svg {
-		width: 1rem;
-	}
-`;
+// https://fontawesome.com/icons
 
-export const IconView = props => {
+const SVG = styled.svg``;
+
+export const FavouriteIcon = props => {
 	return (
-		<IconWrapper {...props}>
-			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 488.85 488.85">
-				<g>
-					<path
-						d="M244.425,98.725c-93.4,0-178.1,51.1-240.6,134.1c-5.1,6.8-5.1,16.3,0,23.1c62.5,83.1,147.2,134.2,240.6,134.2
-		s178.1-51.1,240.6-134.1c5.1-6.8,5.1-16.3,0-23.1C422.525,149.825,337.825,98.725,244.425,98.725z M251.125,347.025
-		c-62,3.9-113.2-47.2-109.3-109.3c3.2-51.2,44.7-92.7,95.9-95.9c62-3.9,113.2,47.2,109.3,109.3
-		C343.725,302.225,302.225,343.725,251.125,347.025z M248.025,299.625c-33.4,2.1-61-25.4-58.8-58.8c1.7-27.6,24.1-49.9,51.7-51.7
-		c33.4-2.1,61,25.4,58.8,58.8C297.925,275.625,275.525,297.925,248.025,299.625z"
-					/>
-				</g>
-			</svg>
-		</IconWrapper>
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="heart"
+			class="svg-inline--fa fa-heart fa-w-16"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 512 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"
+			/>
+		</SVG>
 	);
 };
 
-export const IconLike = props => {
+export const TrashIcon = props => {
 	return (
-		<IconWrapper {...props}>
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24">
-				<path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-			</svg>
-		</IconWrapper>
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="trash-alt"
+			class="svg-inline--fa fa-trash-alt fa-w-14"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 448 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
+			/>
+		</SVG>
 	);
 };
 
-export const IconComment = props => {
+export const EditIcon = props => {
 	return (
-		<IconWrapper {...props}>
-			<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24">
-				<path d="M12,3C17.5,3 22,6.58 22,11C22,15.42 17.5,19 12,19C10.76,19 9.57,18.82 8.47,18.5C5.55,21 2,21 2,21C4.33,18.67 4.7,17.1 4.75,16.5C3.05,15.07 2,13.13 2,11C2,6.58 6.5,3 12,3Z" />
-			</svg>
-		</IconWrapper>
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="pen"
+			class="svg-inline--fa fa-pen fa-w-16"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 512 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"
+			/>
+		</SVG>
 	);
 };
 
-export const IconAttach = props => {
+export const PlusIcon = props => {
 	return (
-		<IconWrapper {...props}>
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-				<path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z" />
-				<path d="M0 0h24v24H0z" fill="none" />
-			</svg>
-		</IconWrapper>
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="plus"
+			class="svg-inline--fa fa-plus fa-w-14"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 448 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+			/>
+		</SVG>
+	);
+};
+
+export const SearchIcon = props => {
+	return (
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="search"
+			class="svg-inline--fa fa-search fa-w-16"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 512 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+			/>
+		</SVG>
+	);
+};
+
+export const BackIcon = props => {
+	return (
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="chevron-left"
+			class="svg-inline--fa fa-chevron-left fa-w-10"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 320 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"
+			/>
+		</SVG>
+	);
+};
+
+export const CloseIcon = props => {
+	return (
+		<SVG
+			aria-hidden="true"
+			focusable="false"
+			data-prefix="fas"
+			data-icon="times"
+			class="svg-inline--fa fa-times fa-w-11"
+			role="img"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 352 512"
+			{...props}
+		>
+			<path
+				fill="currentColor"
+				d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+			/>
+		</SVG>
 	);
 };

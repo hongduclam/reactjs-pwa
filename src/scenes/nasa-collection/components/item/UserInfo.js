@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexDiv, Saperator } from "../../../components/styled";
+import { FlexDiv, Saperator } from "../../../../components";
 import styled from "styled-components";
 
 const S = {

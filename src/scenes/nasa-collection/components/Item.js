@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { ItemImage } from "./ItemImage";
-import { ItemTotalInfo } from "./ItemInfo";
-import { FlexDiv, Saperator } from "../../../components/styled";
-import { UserInfo } from "./UserInfo";
-import { IconView, IconComment, IconLike, IconAttach } from "../../../components/icons";
+import { ItemImage } from "./item/ItemImage";
+import { ItemTotalInfo } from "./item/ItemInfo";
+import { FlexDiv, Saperator } from "../../../components";
+import { ThemeContext } from "./../scenes/item-list/NasaItemListPage";
 
 const S = {};
 S.Item = styled.div`
@@ -43,6 +42,32 @@ S.ItemInfo = styled.div`
 	padding: 0.5em;
 `;
 
+S.ItemDescription = styled.div``;
+
+const getImgStyle = isFullscreen => {
+	if (isFullscreen) {
+		return `cursor: zoom-out;
+    margin: auto;
+    z-index: 101;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto; height: 100%; transition: all .1s ease-out; max-width: 90%`;
+	}
+	return `cursor: zoom-in; z-index: 10;`;
+};
+
+ItemImage = styled.div`
+	object-fit: contain;
+	width: 100%;
+	height: 200px;
+	align-items: ${props => props.alignItems};
+	${props => getImgStyle(props.isFullscreen)};
+`;
+
+S.ItemAction = styled(<FlexDiv justifyContent="flex-end" flex={`2`} />)``;
+
 const ItemInfo = ({ imgUrl, title, totalViews, totalComments, totalLikes }) => {
 	return (
 		<S.ItemInfo>
@@ -64,10 +89,21 @@ const ItemInfo = ({ imgUrl, title, totalViews, totalComments, totalLikes }) => {
 };
 
 export const Item = ({ itemInfo, userInfo }) => {
+	const [isFullscreen, setIsFullscreen] = useState(false);
+	const { handleToggleBackDrop } = useContext(ThemeContext);
+	const handleImgClick = () => {
+		handleToggleBackDrop();
+		setIsFullscreen(!isFullscreen);
+	};
+
 	return (
 		<S.Item>
-			<ItemInfo {...itemInfo} />
-			<UserInfo {...userInfo} />
+			<ItemImage src={url} alt={`${alt}`} onClick={handleImgClick} />
+			<S.ItemInfo />
+			<S.ItemDescription title={``} description={``} />
+			<S.ItemAction>
+				
+			</S.ItemAction>
 		</S.Item>
 	);
 };

@@ -1,7 +1,7 @@
 import { GET_LIST_ITEMS } from "./item.types";
 import { listItems } from "./item.actions";
 import { Observable } from "rxjs";
-import { getListItems } from "../api";
+import { getListItems } from "../api/nasa-item";
 
 export const getListItemsEpic = (action$, ...rest) => {
   return action$

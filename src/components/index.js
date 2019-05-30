@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { Button } from './Button';
+import ErrorBoundary from './ErrorBoundary';
+import { Text } from './Text';
 
 const Saperator = styled.span`
   width: 1vw;
@@ -24,5 +27,7 @@ const BackDrop = styled.div`
   transition: all .25s ease-out;
   display: ${props => (props.show ? 'block' : 'none')};
 `;
-BackDrop.displayName = "BackDropWrapper";
-export { Saperator, FlexDiv, BackDrop };
+
+BackDrop.displayName = "BackDrop";
+
+export { Saperator, FlexDiv, BackDrop, Button, ErrorBoundary, Text };
