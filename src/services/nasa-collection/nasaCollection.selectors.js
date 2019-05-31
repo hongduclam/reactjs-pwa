@@ -2,13 +2,13 @@ import { createSelector } from "reselect";
 import { createLoadingSelector } from "../layout";
 import { STATE_NAME } from "../../constants";
 
-const itemsSelector = state => state[STATE_NAME.ITEM_LIST];
+const nasaCollectionSelector = state => state[STATE_NAME.NASA_COLLECTION];
 const generateSelector = key =>
   createSelector(
-    itemsSelector,
+    nasaCollectionSelector,
     state => state[key]
   );
 
 export const errorSelector = generateSelector("error");
-export const listItemsSelector = generateSelector("listItems");
-export const loadingSelector = createLoadingSelector(["GET_LIST_ITEMS"]);
+export const listItemsSelector = generateSelector("filterItems");
+export const loadingSelector = createLoadingSelector(["FILTER_ITEM"]);

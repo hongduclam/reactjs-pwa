@@ -1,10 +1,8 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { ItemImage } from "./item/ItemImage";
-import { ItemTotalInfo } from "./item/ItemInfo";
-import { FlexDiv, Saperator } from "../../../components";
-import { ThemeContext } from "./../scenes/item-list/NasaItemListPage";
+import { FlexDiv, Text } from "../../../components";
+import { ThemeContext } from "../..";
 
 const S = {};
 S.Item = styled.div`
@@ -58,7 +56,7 @@ const getImgStyle = isFullscreen => {
 	return `cursor: zoom-in; z-index: 10;`;
 };
 
-ItemImage = styled.div`
+const ItemImage = styled.div`
 	object-fit: contain;
 	width: 100%;
 	height: 200px;
@@ -66,29 +64,9 @@ ItemImage = styled.div`
 	${props => getImgStyle(props.isFullscreen)};
 `;
 
-S.ItemAction = styled(<FlexDiv justifyContent="flex-end" flex={`2`} />)``;
+S.ItemAction = styled(() => <FlexDiv justifyContent="flex-start" />)``;
 
-const ItemInfo = ({ imgUrl, title, totalViews, totalComments, totalLikes }) => {
-	return (
-		<S.ItemInfo>
-			<ItemImage url={imgUrl} alt={title} />
-			<FlexDiv alignItems="center">
-				<FlexDiv justifyContent="flex-start" flex={`1`}>
-					<IconAttach />
-				</FlexDiv>
-				<FlexDiv justifyContent="flex-end" flex={`2`}>
-					<ItemTotalInfo icon={<IconView />} value={totalViews} />
-					<Saperator />
-					<ItemTotalInfo icon={<IconComment />} value={totalComments} />
-					<Saperator />
-					<ItemTotalInfo icon={<IconLike />} value={totalLikes} />
-				</FlexDiv>
-			</FlexDiv>
-		</S.ItemInfo>
-	);
-};
-
-export const Item = ({ itemInfo, userInfo }) => {
+export const Item = ({ imgThumbUrl, dateCreated, creator, title, description, actionComponent }) => {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const { handleToggleBackDrop } = useContext(ThemeContext);
 	const handleImgClick = () => {
@@ -98,31 +76,32 @@ export const Item = ({ itemInfo, userInfo }) => {
 
 	return (
 		<S.Item>
-			<ItemImage src={url} alt={`${alt}`} onClick={handleImgClick} />
-			<S.ItemInfo />
-			<S.ItemDescription title={``} description={``} />
-			<S.ItemAction>
-				
-			</S.ItemAction>
+			<ItemImage src={imgThumbUrl} alt={`${title}`} onClick={handleImgClick} />
+			<S.ItemInfo>
+				<Text variant="small">{creator}</Text>
+				<Text variant="small">{dateCreated}</Text>
+			</S.ItemInfo>
+			<S.ItemDescription>
+				<Text variant={`title`}>{title}</Text>
+				<Text variant={`normal`}>{description}</Text>
+			</S.ItemDescription>
+			{actionComponent && <S.ItemAction>{actionComponent}</S.ItemAction>}
 		</S.Item>
 	);
 };
 
 Item.defaultProps = {
-	itemInfo: {},
-	userInfo: {}
+	imgThumbUrl: "",
+	dateCreated: "",
+	creator: "",
+	title: "",
+	actionComponent: null
 };
 
 Item.propTypes = {
-	itemInfo: PropTypes.shape({
-		totalViews: PropTypes.number,
-		totalComments: PropTypes.number,
-		totalLikes: PropTypes.number,
-		imgUrl: PropTypes.string,
-		title: PropTypes.string
-	}),
-	userInfo: PropTypes.shape({
-		avatarUrl: PropTypes.string,
-		name: PropTypes.string
-	})
+	imgThumbUrl: PropTypes.string,
+	dateCreated: PropTypes.string,
+	creator: PropTypes.string,
+	title: PropTypes.string,
+	actionComponent: PropTypes.element
 };

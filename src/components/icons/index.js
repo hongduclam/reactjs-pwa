@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 // https://fontawesome.com/icons
 
-const SVG = styled.svg``;
+const SVG = styled.svg`
+	color: ${props => props.color};
+`;
 
 export const FavouriteIcon = props => {
 	return (
