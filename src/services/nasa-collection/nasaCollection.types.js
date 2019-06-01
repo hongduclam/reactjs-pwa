@@ -1,9 +1,4 @@
-export const ADD_ITEM = {
-  START: "ADD_ITEM_START",
-  CANCEL: "ADD_ITEM_CANCEL",
-  ERROR: "ADD_ITEM_ERROR",
-  SUCCESS: "ADD_ITEM_SUCCESS"
-};
+export const ADD_ITEM = 'ADD_ITEM'
 
 export const SEARCH_ITEM = {
   START: "SEARCH_ITEM_START",
@@ -13,5 +8,9 @@ export const SEARCH_ITEM = {
 };
 
 export const FILTER_ITEM = `FILTER_ITEM`
+export const DELETE_ITEM = `DELETE_ITEM`
+export const UPDATE_ITEM = `UPDATE_ITEM`
+export const GET_ITEM = `GET_ITEM`
+export const UPDATE_FAVOURITE_ITEM = `UPDATE_FAVOURITE_ITEM`
 
 export const RESET = "RESET";

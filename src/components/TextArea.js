@@ -3,18 +3,18 @@ import styled from "styled-components";
 
 const S = {};
 
-S.Input = styled.div`
+S.TextArea = styled.div`
 	position: relative;
 	border-radius: 3px;
 	width: 100%;
-	height: 56px;
+	height: 4em;
 	padding-top: 0.3em;
 
-	input {
+	textarea {
 		font-size: 14px;
-		color: rgba(0, 0, 0, 0.8999999761581421);
 		width: calc(100% - 0.6em);
-		height: calc(100% - 0.3em);
+		height: calc(100% - 1.4em);
+		color: rgba(0, 0, 0, 0.8999999761581421);
 		font-family: Helvetica;
 		font-size: 16px;
 		font-weight: 400;
@@ -24,7 +24,7 @@ S.Input = styled.div`
 		text-align: left;
 		border: 1px solid #ceced2;
 		border-radius: 3px;
-		padding-top: 0.5em;
+		padding-top: 1.4em;
 		padding-left: 0.5em;
 	}
 
@@ -42,8 +42,8 @@ S.Input = styled.div`
 		opacity: 0.3;
 	}
 
-	input:focus ~ label,
-	input:not(:focus):valid ~ label {
+	textarea:focus ~ label,
+	textarea:not(:focus):valid ~ label {
 		top: 10px;
 		bottom: 10px;
 		left: 10px;
@@ -56,15 +56,17 @@ S.Input = styled.div`
 	}
 `;
 
-export const Input = ({ label, name, required, value }) => {
+export const TextArea = ({ label, name, required, value, ...otherProps }) => {
 	return (
-		<S.Input>
-			<input type="text" name={`${name}`} required value={value} />
+		<S.TextArea>
+			<textarea name={`${name}`} required {...otherProps}>
+				{value}
+			</textarea>
 			{label && (
 				<label htmlFor={`${name}`}>
 					{label} {required && <span> * </span>}
 				</label>
 			)}
-		</S.Input>
+		</S.TextArea>
 	);
 };

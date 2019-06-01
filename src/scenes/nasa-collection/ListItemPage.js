@@ -1,51 +1,79 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { filterItems as filterItemsAction, errorSelector, listItemsSelector } from "../../services/nasa-collection";
-import { connect } from "react-redux";
-import { FlexDiv, Button, Text, FavouriteIcon, TrashIcon, EditIcon, PlusIcon } from "../../components";
+import {
+	filterItems as filterItemsAction,
+	errorSelector,
+	listItemsSelector,
+	updateFavouriteItem,
+	getItem,
+	deleteItem,
+	itemDetailSelector
+} from "../../services/nasa-collection";
+import {
+	FlexDiv,
+	FavouriteIcon,
+	TrashIcon,
+	EditIcon,
+	PlusIcon,
+	PrimaryButton,
+	ActionButton,
+	FavouriteActiveIcon
+} from "../../components";
+
 import { Item } from "./components/Item";
+import AddOrEditItemModal from "./components/AddOrEditItemModal";
 
 const S = {};
 
 S.ListItemPage = styled.div`
-	margin: 0 auto;
+	margin: 4em 2em;
+	background-color: #ffffff;
+	a {
+		text-decoration: none;
+	}
 `;
 
-S.ListItemContent = styled(FlexDiv)`
+export const ListItemContent = styled(FlexDiv)`
 	flex-flow: row wrap;
 	justify-content: flex-start;
 	box-sizing: border-box;
 `;
 
-S.ListItemHeader = styled(() => <FlexDiv justifyContent={`space-between`} />)``;
-
-S.ItemAction = styled(() => <FlexDiv justifyContent={`space-between`} />)`
-	width: 90%;
+S.ListItemHeader = styled(FlexDiv)`
+	justify-content: space-between;
+	align-items: center;
 `;
 
-const AddButton = styled(Button)`
-	color: purple;
+S.ItemAction = styled(FlexDiv)`
+	justify-content: space-between;
+	width: 10em;
 `;
 
-const Title = styled(() => <Text variant="title" />)`
-	font-size: 3rem;
+const Title = styled.h1`
+	color: #000000;
+	font-size: 50px;
+	font-weight: 700;
+	letter-spacing: -1.21px;
+	line-height: 60px;
+	opacity: 0.30327;
+	text-align: left;
 `;
 
 const ItemAction = ({ isFavourite, handleEdit, handleFavourite, handleDelete }) => {
 	return (
 		<S.ItemAction>
-			<Button onClick={handleFavourite}>
-				<FavouriteIcon color={isFavourite ? "red" : "grey"} />
-			</Button>
-			<Button onClick={handleDelete}>
+			<ActionButton onClick={handleFavourite}>{isFavourite ? <FavouriteActiveIcon /> : <FavouriteIcon />}</ActionButton>
+			<ActionButton onClick={handleDelete}>
 				<TrashIcon />
-			</Button>
-			<Button onClick={handleEdit}>
+			</ActionButton>
+			<ActionButton onClick={handleEdit}>
 				<EditIcon />
-			</Button>
+			</ActionButton>
 		</S.ItemAction>
 	);
 };
@@ -58,11 +86,18 @@ ItemAction.defaultProps = {
 };
 const limit = 20;
 
-export class ListItemPage extends React.PureComponent {
+class ListItemPage extends React.PureComponent {
 	page = 0;
+	filterParams = {
+		page: { index: -1, size: 20 },
+		sortBy: { title: "asc", date: "desc" },
+		searchBy: { title: "", date: "", favorite: "" }
+	};
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			open: false
+		};
 	}
 
 	componentDidMount() {
@@ -80,34 +115,57 @@ export class ListItemPage extends React.PureComponent {
 		}
 	};
 
-	handleEditItem = itemId => {};
-	handleAddItem = () => {};
+	handleEditItem = itemId => {
+		this.props.getItem(itemId);
+		this.setState({
+			open: true
+		});
+	};
+
+	handleDeleteItem = itemId => {
+		this.props.deleteItem(itemId);
+	};
+
+	handleFavouriteItem = itemId => {
+		this.props.updateFavouriteItem(itemId);
+	};
 
 	filterItems = () => {
-		this.page = this.page + 1;
-		this.props.filterItems(limit, this.page);
+		this.filterParams.page.index = this.filterParams.page.index + 1;
+		this.props.filterItems(this.filterParams);
 	};
 
 	render() {
-		const { items } = this.props;
+		const { items, itemData } = this.props;
+		const { open } = this.state;
 		return (
 			<S.ListItemPage>
 				<S.ListItemHeader>
 					<Title>{`NASA Collection`}</Title>
-					<AddButton onClick={this.handleAddItem}>
-						<PlusIcon />
-						<Text>{`Add new item`}</Text>
-					</AddButton>
+					<NavLink to="/add">
+						<PrimaryButton>
+							<PlusIcon />
+							{`Add new item`}
+						</PrimaryButton>
+					</NavLink>
 				</S.ListItemHeader>
-				<S.ListItemContent>
+				<ListItemContent>
 					{items.map((item, index) => (
 						<Item
 							{...item}
 							key={`item-key-${item.id}-${index}`}
-							actionComponent={<ItemAction handleEdit={this.handleEditItem} />}
+							actionComponent={
+								<ItemAction
+									isFavourite={item.isFavourite}
+									handleEdit={this.handleEditItem}
+									handleDelete={this.handleDeleteItem}
+									handleFavourite={this.handleFavouriteItem}
+								/>
+							}
 						/>
 					))}
-				</S.ListItemContent>
+				</ListItemContent>
+				<AddOrEditItemModal itemData={itemData} actionType="edit" open={open} handleClose={this.handleCloseModal} />
 			</S.ListItemPage>
 		);
 	}
@@ -117,12 +175,22 @@ export const mapDispatchToProps = dispatch => {
 	return {
 		filterItems: payload => {
 			dispatch(filterItemsAction(payload));
+		},
+		updateFavouriteItem: itemId => {
+			dispatch(updateFavouriteItem(itemId));
+		},
+		deleteItem: itemId => {
+			dispatch(deleteItem(itemId));
+		},
+		getItem: itemId => {
+			dispatch(getItem(itemId));
 		}
 	};
 };
 
 export const mapStateToProps = createStructuredSelector({
 	items: listItemsSelector,
+	itemData: itemDetailSelector,
 	error: errorSelector
 });
 
@@ -135,7 +203,7 @@ ListItemPage.defaultProps = {
 	isFetching: false,
 	items: [],
 	error: null,
-	filterItems: React.noop
+	filterItems: () => {}
 };
 
 ListItemPage.propTypes = {

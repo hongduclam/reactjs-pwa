@@ -6,6 +6,7 @@ import { ThemeContext } from "../..";
 
 const S = {};
 S.Item = styled.div`
+	width: 18.75em;
 	flex-basis: calc(25% - 1em);
 	position: relative;
 	box-sizing: border-box;
@@ -35,12 +36,28 @@ S.Item = styled.div`
 	}
 `;
 
-S.ItemInfo = styled.div`
+S.ItemInfo = styled(FlexDiv)`
 	background-color: white;
-	padding: 0.5em;
+	p:first-child {
+		padding-right: 1em;
+	}
+	> p {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	margin: 0.5em 0;
 `;
 
-S.ItemDescription = styled.div``;
+S.ItemDescription = styled.div`
+	> h2 {
+		font-size: 24px;
+		font-weight: 400;
+		letter-spacing: -0.58px;
+		line-height: 29px;
+		margin: 0.5em 0;
+	}
+`;
 
 const getImgStyle = isFullscreen => {
 	if (isFullscreen) {
@@ -56,34 +73,50 @@ const getImgStyle = isFullscreen => {
 	return `cursor: zoom-in; z-index: 10;`;
 };
 
-const ItemImage = styled.div`
-	object-fit: contain;
-	width: 100%;
-	height: 200px;
-	align-items: ${props => props.alignItems};
-	${props => getImgStyle(props.isFullscreen)};
+S.ItemImage = styled.div`
+	> img {
+		border-radius: 3px;
+		object-fit: contain;
+		width: 100%;
+		height: 168px;
+		align-items: ${props => props.alignItems};
+		${props => getImgStyle(props.isFullscreen)};
+	}
 `;
 
-S.ItemAction = styled(() => <FlexDiv justifyContent="flex-start" />)``;
+S.ItemAction = styled(FlexDiv)`
+	justify-content: flex-start;
+	margin: 0.5em 0;
+`;
 
 export const Item = ({ imgThumbUrl, dateCreated, creator, title, description, actionComponent }) => {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const { handleToggleBackDrop } = useContext(ThemeContext);
 	const handleImgClick = () => {
-		handleToggleBackDrop();
+		handleToggleBackDrop(!isFullscreen);
 		setIsFullscreen(!isFullscreen);
 	};
 
 	return (
 		<S.Item>
-			<ItemImage src={imgThumbUrl} alt={`${title}`} onClick={handleImgClick} />
+			<S.ItemImage isFullscreen={isFullscreen}>
+				<img src={imgThumbUrl} alt={`${title}`} onClick={handleImgClick} />
+			</S.ItemImage>
 			<S.ItemInfo>
-				<Text variant="small">{creator}</Text>
-				<Text variant="small">{dateCreated}</Text>
+				<Text variant="small" color="#000000">
+					{creator}
+				</Text>
+				<Text variant="small" color="#000000">
+					{dateCreated}
+				</Text>
 			</S.ItemInfo>
 			<S.ItemDescription>
-				<Text variant={`title`}>{title}</Text>
-				<Text variant={`normal`}>{description}</Text>
+				<Text variant={`title`} color="#000000">
+					{title}
+				</Text>
+				<Text variant={`normal`} color="#000000">
+					{description}
+				</Text>
 			</S.ItemDescription>
 			{actionComponent && <S.ItemAction>{actionComponent}</S.ItemAction>}
 		</S.Item>

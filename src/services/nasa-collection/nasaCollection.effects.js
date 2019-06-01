@@ -1,21 +1,22 @@
-import { FILTER_ITEM } from "./nasaCollection.types";
+import { SEARCH_ITEM } from "./nasaCollection.types";
 import { Observable } from "rxjs";
-// import { getListItems } from "../api/nasa-collection";
+import { search } from "../api/nasa-collection";
+import { searchItem } from "./nasaCollection.actions";
 
-// export const getListItemsEpic = (action$, ...rest) => {
-//   return action$
-//     .ofType(FILTER_ITEM)
-//     .delay(300)
-//     .switchMap(action => {
-//       return getListItems(action.payload).map(response => {
-//         if (response.status === 500) {
-//           throw response.message;
-//         }
-//         return listItems.success(response.data);
-//       });
-//     })
-//     .takeUntil(action$.ofType(listItems.canceled()))
-//     .catch(error => {
-//       return Observable.of(listItems.error(error));
-//     });
-// };
+export const searchItemEpic = (action$, ...rest) => {
+	return action$
+		.ofType(SEARCH_ITEM.START)
+		.delay(300)
+		.switchMap(action => {
+			return search(action.payload).map(response => {
+				if (response.status === 500) {
+					throw response.message;
+				}
+				return searchItem.success(response.data);
+			});
+		})
+		.takeUntil(action$.ofType(searchItem.canceled()))
+		.catch(error => {
+			return Observable.of(searchItem.error(error));
+		});
+};

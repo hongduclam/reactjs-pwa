@@ -80,10 +80,10 @@ module.exports = function(proxy, allowedHost) {
 		},
 		public: allowedHost,
 		proxy: {
-			"/app/*": {
-        target: "https://api.giphy.com",
+			"/api/*": {
+        target: "https://images-api.nasa.gov",
 				pathRewrite: {
-					"/app": ""
+					"/api": ""
         },
         changeOrigin: true
 			}

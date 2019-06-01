@@ -1,19 +1,27 @@
 import styled from "styled-components";
-import { Button } from "./Button";
-import { EditIcon, FavouriteIcon, TrashIcon, PlusIcon } from "./icons";
+import { Modal } from "./Modal";
+import { Button, PrimaryButton, ActionButton } from "./Button";
+import {
+	EditIcon,
+	FavouriteIcon,
+	TrashIcon,
+	PlusIcon,
+	FavouriteActiveIcon,
+	CloseIcon,
+	CheckIcon,
+	DrowDownIcon,
+	BackIcon,
+} from "./Icon";
+import { FlexDiv } from "./FlexDiv";
+import { Input } from "./Input";
+import { Select } from "./Select";
+import { TextArea } from "./TextArea";
+
 import ErrorBoundary from "./ErrorBoundary";
 import { Text } from "./Text";
 
 const Saperator = styled.span`
 	width: 1vw;
-`;
-
-const FlexDiv = styled.div`
-	display: flex;
-	align-items: ${props => props.alignItems};
-	justify-content: ${props => props.justifyContent};
-	width: ${props => props.width};
-	flex: ${props => props.flex};
 `;
 
 const BackDrop = styled.div`
@@ -31,4 +39,26 @@ const BackDrop = styled.div`
 
 BackDrop.displayName = "BackDrop";
 
-export { Saperator, FlexDiv, BackDrop, Button, ErrorBoundary, Text, EditIcon, FavouriteIcon, TrashIcon, PlusIcon };
+export {
+	Saperator,
+	FlexDiv,
+	BackDrop,
+	Button,
+	PrimaryButton,
+	ActionButton,
+	ErrorBoundary,
+	Text,
+	EditIcon,
+	FavouriteIcon,
+	FavouriteActiveIcon,
+	TrashIcon,
+	PlusIcon,
+	CloseIcon,
+	CheckIcon,
+	Modal,
+	Input,
+	Select,
+	DrowDownIcon,
+	TextArea,
+	BackIcon
+};

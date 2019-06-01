@@ -1,21 +1,25 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import { loadingSelector } from "./../../services/nasa-collection/nasaCollection.selectors";
-import { createStructuredSelector } from "reselect";
-import { ListItemPage } from "./ListItemPage";
+import ListItemPage from "./ListItemPage";
+import AddItemPage from "./AddItemPage";
 class NasaCollection extends PureComponent {
 	render() {
 		const { isFetching } = this.props;
 		return (
 			<BlockUi tag="div" blocking={isFetching}>
-				<Switch>
-					<Route exact path="/" component={ListItemPage} />
-				</Switch>
+				<Router>
+					<Switch>
+						<Route exact path="/" component={ListItemPage} />
+						<Route path="/add" component={AddItemPage} />
+					</Switch>
+				</Router>
 			</BlockUi>
 		);
 	}
