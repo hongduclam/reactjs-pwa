@@ -9,7 +9,8 @@ import {
 	OPEN_MODAL,
 	CLOSE_MODAL,
 	FORM_CONTROL_CHANGE,
-	SEARCH_QUERY_CHANGE
+	SEARCH_QUERY_CHANGE,
+	CHANGE_FILTER_PARAM
 } from "./nasaCollection.types";
 
 export const filterItems = payload => {
@@ -105,6 +106,13 @@ export const formControlChange = payload => {
 export const searchQueryChange = payload => {
 	return {
 		type: SEARCH_QUERY_CHANGE,
+		payload
+	};
+};
+
+export const changeFilterParam = payload => {
+	return {
+		type: CHANGE_FILTER_PARAM,
 		payload
 	};
 };

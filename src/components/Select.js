@@ -9,7 +9,7 @@ const S = {
 		border-radius: 3px;
 		padding-top: 0.3em;
 		width: 100%;
-		height: 56px;
+		height: 61px;
 		select {
 			-webkit-appearance: none;
 			appearance: none;

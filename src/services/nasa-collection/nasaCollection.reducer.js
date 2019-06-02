@@ -9,7 +9,8 @@ import {
 	OPEN_MODAL,
 	CLOSE_MODAL,
 	FORM_CONTROL_CHANGE,
-	SEARCH_QUERY_CHANGE
+	SEARCH_QUERY_CHANGE,
+	CHANGE_FILTER_PARAM
 } from "./nasaCollection.types";
 import { filterItems, transformSeachedItem } from "./nasaCollection.services";
 import { cloneDeep } from "lodash";
@@ -38,6 +39,9 @@ export const nasaCollectionReducer = (state = initState, action) => {
 			const filteredItems = filterItems(listItems, action.payload);
 			return Object.assign({}, state, {
 				filteredItems: [...filteredItems],
+			});
+		case CHANGE_FILTER_PARAM:
+			return Object.assign({}, state, {
 				filterParams: {
 					...action.payload
 				}

@@ -12,7 +12,8 @@ import {
 	deleteItem,
 	openModal,
 	filteredItemsSelector,
-	filterParamsSelector
+	filterParamsSelector,
+	changeFilterParam
 } from "../../services/nasa-collection";
 import {
 	FlexDiv,
@@ -22,7 +23,9 @@ import {
 	PlusIcon,
 	PrimaryButton,
 	ActionButton,
-	FavouriteActiveIcon
+	FavouriteActiveIcon,
+	Input,
+	Select,
 } from "../../components";
 
 import { Item } from "./components/Item";
@@ -31,7 +34,7 @@ import { ACTION_TYPE } from "../../constants";
 const S = {};
 
 S.ListItemPage = styled.div`
-	margin: 4em 2em;
+	margin: 2em 2em;
 	background-color: #ffffff;
 	a {
 		text-decoration: none;
@@ -47,6 +50,12 @@ export const ListItemContent = styled(FlexDiv)`
 S.ListItemHeader = styled(FlexDiv)`
 	justify-content: space-between;
 	align-items: center;
+`;
+
+S.FilterContent = styled(FlexDiv)`
+	> div {
+		margin: 0.5em;
+	}
 `;
 
 S.ItemAction = styled(FlexDiv)`
@@ -86,13 +95,6 @@ ItemAction.defaultProps = {
 };
 
 class ListItemPage extends React.PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			open: false
-		};
-	}
-
 	componentDidMount() {
 		document.addEventListener("scroll", this.handleLoadMore, false);
 		this.filterItems();
@@ -129,8 +131,21 @@ class ListItemPage extends React.PureComponent {
 		this.props.filterItems(this.props.filterParams);
 	};
 
+	handleControlChange = ({ currentTarget: { name, value } }) => {
+		const param = {
+			...this.props.filterParams,
+			[name]: value,
+		};
+		this.props.updateFilterParam(param);
+		this.props.filterItems(param);
+	};
+
 	render() {
-		const { items } = this.props;
+		const {
+			items,
+			filterParams: { searchByTitle, searchByFavourite, sortBy }
+		} = this.props;
+
 		return (
 			<S.ListItemPage>
 				<S.ListItemHeader>
@@ -142,6 +157,29 @@ class ListItemPage extends React.PureComponent {
 						</PrimaryButton>
 					</NavLink>
 				</S.ListItemHeader>
+				<S.FilterContent>
+					<Input
+						onChange={this.handleControlChange}
+						label={`Search by title`}
+						name="searchByTitle"
+						value={searchByTitle}
+					/>
+					<Select
+						onChange={this.handleControlChange}
+						label={`Is favourite`}
+						name="searchByFavourite"
+						value={searchByFavourite}
+						options={[{ text: "Yes", value: true }, { text: "No", value: false }]}
+					/>
+
+					<Select
+						onChange={this.handleControlChange}
+						label={`Sort by`}
+						name="sortBy"
+						value={sortBy}
+						options={[{ text: "Title", value: "title" }, { text: "Date", value: "dateCreated" }]}
+					/>
+				</S.FilterContent>
 				<ListItemContent>
 					{items.map((item, index) => (
 						<Item
@@ -167,6 +205,9 @@ export const mapDispatchToProps = dispatch => {
 	return {
 		filterItems: payload => {
 			dispatch(filterItemsAction(payload));
+		},
+		updateFilterParam: payload => {
+			dispatch(changeFilterParam(payload));
 		},
 		updateFavouriteItem: itemId => {
 			dispatch(updateFavouriteItem(itemId));

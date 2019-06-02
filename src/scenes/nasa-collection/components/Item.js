@@ -44,6 +44,7 @@ S.ItemInfo = styled(FlexDiv)`
 	justify-content: space-between;
 	p:first-child {
 		padding-right: 1em;
+		width: 50%;
 	}
 	> p {
 		white-space: nowrap;
@@ -118,7 +119,7 @@ export const Item = ({ previewImgLink, dateCreated, creator, title, description,
 		handleToggleBackDrop(!isFullscreen);
 		setIsFullscreen(!isFullscreen);
 	};
-
+	const formatDate = new Date(dateCreated).toDateString()
 	return (
 		<S.Item>
 			<S.ItemImage isFullscreen={isFullscreen}>
@@ -129,7 +130,7 @@ export const Item = ({ previewImgLink, dateCreated, creator, title, description,
 					{creator}
 				</Text>
 				<Text variant="small" color="#000000">
-					{dateCreated}
+					{formatDate}
 				</Text>
 			</S.ItemInfo>
 			<S.ItemDescription>
