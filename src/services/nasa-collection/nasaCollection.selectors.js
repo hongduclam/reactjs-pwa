@@ -3,7 +3,6 @@ import { createLoadingSelector } from "../layout";
 import { STATE_NAME } from "../../constants";
 
 const nasaCollectionSelector = state => {
-	console.log(state);
 	return state[STATE_NAME.NASA_COLLECTION]
 };
 const generateSelector = key =>

@@ -26,7 +26,7 @@ import {
 } from "../../components";
 
 import { Item } from "./components/Item";
-import { ACTION_TYPE, FILLTER_PARAM_DEFAULT } from "../../constants";
+import { ACTION_TYPE } from "../../constants";
 
 const S = {};
 
