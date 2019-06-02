@@ -26,7 +26,6 @@ import {
 	FavouriteActiveIcon,
 	Input,
 	Select,
-	Saperator
 } from "../../components";
 
 import { Item } from "./components/Item";
