@@ -56,10 +56,10 @@ S.Input = styled.div`
 	}
 `;
 
-export const Input = ({ label, name, required, value }) => {
+export const Input = ({ label, name, required, value, onChange }) => {
 	return (
 		<S.Input>
-			<input type="text" name={`${name}`} required value={value} />
+			<input type="text" name={`${name}`} required value={value} onChange={onChange} />
 			{label && (
 				<label htmlFor={`${name}`}>
 					{label} {required && <span> * </span>}

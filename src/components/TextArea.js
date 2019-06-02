@@ -59,9 +59,7 @@ S.TextArea = styled.div`
 export const TextArea = ({ label, name, required, value, ...otherProps }) => {
 	return (
 		<S.TextArea>
-			<textarea name={`${name}`} required {...otherProps}>
-				{value}
-			</textarea>
+			<textarea name={`${name}`} required {...otherProps} value={value} />
 			{label && (
 				<label htmlFor={`${name}`}>
 					{label} {required && <span> * </span>}

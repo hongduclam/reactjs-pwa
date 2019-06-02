@@ -4,12 +4,24 @@ import { connect } from "react-redux";
 
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import BlockUi from "react-block-ui";
+import "react-block-ui/style.css";
+
 import { Button, BackIcon, Text, ActionButton, PlusIcon } from "../../components";
 import { ListItemContent } from "./ListItemPage";
 import { Item } from "./components/Item";
-import { itemDetailSelector, getItem, searchItem, searchedItemsSelector } from "../../services/nasa-collection";
+import {
+	searchItem,
+	searchedItemsSelector,
+	openModal,
+	loadingSelector,
+	searchQuerySelector,
+	searchQueryChange,
+	resultMessageSelector
+} from "../../services/nasa-collection";
 import { createStructuredSelector } from "reselect";
-import AddOrEditItemModal from "./components/AddOrEditItemModal";
+
+import { ACTION_TYPE } from "../../constants";
 
 const S = {};
 
@@ -77,7 +89,7 @@ const AddButton = styled(ActionButton)`
 	color: #d3d3d3;
 	opacity: 1;
 	background-color: ${props => (props.disabled ? "#CECED2" : "white")};
-	width: 20em;
+	width: 100%;
 	g {
 		fill: #ceced2;
 	}
@@ -101,109 +113,100 @@ const ItemAction = ({ isAdded, handleClick }) => {
 };
 
 class AddItemPage extends PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			searchQuery: "",
-			openModal: false,
-			itemData: null
-		};
+	componentDidMount() {
+		this.handleSearchItem();
 	}
 
 	handleInputChange = ({ currentTarget: { value } }) => {
-		this.setState({
-			searchQuery: value
-		});
+		this.props.handleSearchQueryChange(value);
 	};
 
 	handleSearchItem = () => {
-		this.props.searchItem(this.state.searchQuery);
+		const { searchQuery } = this.props;
+		if (searchQuery) {
+			this.props.searchItem(searchQuery);
+		}
 	};
 
-	handleCloseModal = () => {
-		this.setState({
-			openModal: false,
-			itemData: null
-		});
+	handleAddItem = itemData => event => {
+		if (!itemData.isAdded) {
+			this.props.openModal({
+				selectedItem: { ...itemData },
+				actionType: ACTION_TYPE.ADD
+			});
+		}
 	};
 
-	handleAddItem = itemData => {
-		this.setState({
-			openModal: true,
-			itemData: { ...itemData, isAdded: true }
-		});
+	handleKeyUp = event => {
+		if (event.keyCode === 13) {
+			this.handleSearchItem();
+		}
 	};
 
 	render() {
-		const { searchedItems } = this.props;
-		const { searchQuery, openModal, itemData } = this.state;
-		const resultTotal = searchedItems.length;
+		const { searchedItems, isFetching, searchQuery, resultMessage } = this.props;
 		return (
-			<S.AddItemPage>
-				<S.Header>
-					<NavLink to={`/`}>
-						<BackButton>
-							<BackIcon />
-							{`Back to collection`}
-						</BackButton>
-					</NavLink>
-				</S.Header>
-				<S.SearchContent>
-					<S.Title>{`Search from Nasa`}</S.Title>
-					<SearchInput
-						placeholder={`Type something to search...`}
-						value={searchQuery}
-						onChange={this.handleInputChange}
-						onBlur={this.handleSearchItem}
-					/>
-				</S.SearchContent>
-				<S.ResultContent>
-					{searchQuery && (
-						<S.ResultMessage>{`${resultTotal} Result${resultTotal > 0 ? "s" : ""} for ${searchQuery}`}</S.ResultMessage>
-					)}
-					<ListItemContent>
-						{searchedItems.map((item, index) => (
-							<Item
-								{...item}
-								key={`item-key-${item.id}-${index}`}
-								actionComponent={<ItemAction handleClick={() => this.handleAddItem(item)} />}
-							/>
-						))}
-					</ListItemContent>
-				</S.ResultContent>
-				{openModal && (
-					<AddOrEditItemModal
-						itemData={itemData}
-						actionType="add"
-						open={openModal}
-						handleClose={this.handleCloseModal}
-					/>
-				)}
-			</S.AddItemPage>
+			<BlockUi tag="div" blocking={isFetching}>
+				<S.AddItemPage>
+					<S.Header>
+						<NavLink to={`/`}>
+							<BackButton>
+								<BackIcon />
+								{`Back to collection`}
+							</BackButton>
+						</NavLink>
+					</S.Header>
+					<S.SearchContent>
+						<S.Title>{`Search from Nasa`}</S.Title>
+						<SearchInput
+							placeholder={`Type something to search...`}
+							value={searchQuery}
+							onChange={this.handleInputChange}
+							onBlur={this.handleSearchItem}
+						/>
+					</S.SearchContent>
+					<S.ResultContent>
+						{resultMessage && <S.ResultMessage> {resultMessage}</S.ResultMessage>}
+						<ListItemContent>
+							{searchedItems.map((item, index) => (
+								<Item
+									{...item}
+									key={`item-key-${item.id}-${index}`}
+									actionComponent={<ItemAction isAdded={item.isAdded} handleClick={this.handleAddItem(item)} />}
+								/>
+							))}
+						</ListItemContent>
+					</S.ResultContent>
+				</S.AddItemPage>
+			</BlockUi>
 		);
 	}
 }
 
 AddItemPage.propTypes = {};
 AddItemPage.defaultProps = {
-	searchedItems: [],
-	itemData: {}
+	searchedItems: []
 };
 
 export const mapDispatchToProps = dispatch => {
 	return {
-		getItem: formData => {
-			dispatch(getItem(formData));
+		openModal: payload => {
+			dispatch(openModal(payload));
 		},
 		searchItem: q => {
 			dispatch(searchItem.start(q));
+		},
+		handleSearchQueryChange: value => {
+			dispatch(searchQueryChange(value));
 		}
 	};
 };
 
 export const mapStateToProps = createStructuredSelector({
-	// itemData: itemDetailSelector,
-	searchedItems: searchedItemsSelector
+	searchedItems: searchedItemsSelector,
+	isFetching: loadingSelector,
+	searchQuery: searchQuerySelector,
+	resultMessage: resultMessageSelector
 });
 
 export default connect(

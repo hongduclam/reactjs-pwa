@@ -2,7 +2,6 @@ import { SEARCH_ITEM } from "./nasaCollection.types";
 import { Observable } from "rxjs";
 import { search } from "../api/nasa-collection";
 import { searchItem } from "./nasaCollection.actions";
-import { transformSeachedItem } from "./nasaCollection.services";
 
 export const searchItemEpic = (action$, ...rest) => {
 	return action$
@@ -13,8 +12,7 @@ export const searchItemEpic = (action$, ...rest) => {
 				if (response.status === 500) {
 					throw response.message;
 				}
-				const searchedItems = transformSeachedItem(response.data);
-				return searchItem.success(searchedItems);
+				return searchItem.success(response.data);
 			});
 		})
 		.takeUntil(action$.ofType(searchItem.canceled()))

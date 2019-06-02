@@ -8,11 +8,11 @@ import { createStructuredSelector } from "reselect";
 import {
 	filterItems as filterItemsAction,
 	errorSelector,
-	listItemsSelector,
 	updateFavouriteItem,
-	getItem,
 	deleteItem,
-	itemDetailSelector
+	openModal,
+	filteredItemsSelector,
+	filterParamsSelector
 } from "../../services/nasa-collection";
 import {
 	FlexDiv,
@@ -26,7 +26,7 @@ import {
 } from "../../components";
 
 import { Item } from "./components/Item";
-import AddOrEditItemModal from "./components/AddOrEditItemModal";
+import { ACTION_TYPE, FILLTER_PARAM_DEFAULT } from "../../constants";
 
 const S = {};
 
@@ -84,15 +84,8 @@ ItemAction.defaultProps = {
 	handleFavourite: React.noop,
 	handleDelete: React.noop
 };
-const limit = 20;
 
 class ListItemPage extends React.PureComponent {
-	page = 0;
-	filterParams = {
-		page: { index: -1, size: 20 },
-		sortBy: { title: "asc", date: "desc" },
-		searchBy: { title: "", date: "", favorite: "" }
-	};
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -110,39 +103,34 @@ class ListItemPage extends React.PureComponent {
 	}
 
 	handleLoadMore = () => {
-		if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-			this.filterItems();
-		}
+		// if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+		// 	this.filterItems();
+		// }
 	};
 
-	handleEditItem = itemId => {
-		this.props.getItem(itemId);
-		this.setState({
-			open: true
+	handleEditItem = itemData => event => {
+		this.props.openModal({
+			actionType: ACTION_TYPE.EDIT,
+			selectedItem: itemData
 		});
 	};
 
-	handleDeleteItem = itemId => {
+	handleDeleteItem = ({ itemId }) => event => {
 		this.props.deleteItem(itemId);
+		this.filterItems();
 	};
 
-	handleFavouriteItem = itemId => {
+	handleFavouriteItem = ({ itemId }) => event => {
 		this.props.updateFavouriteItem(itemId);
+		this.filterItems();
 	};
 
 	filterItems = () => {
-		this.filterParams.page.index = this.filterParams.page.index + 1;
-		this.props.filterItems(this.filterParams);
-	};
-	handleCloseModal = () => {
-		this.setState({
-			open: false
-		});
+		this.props.filterItems(this.props.filterParams);
 	};
 
 	render() {
-		const { items, itemData } = this.props;
-		const { open } = this.state;
+		const { items } = this.props;
 		return (
 			<S.ListItemPage>
 				<S.ListItemHeader>
@@ -162,15 +150,14 @@ class ListItemPage extends React.PureComponent {
 							actionComponent={
 								<ItemAction
 									isFavourite={item.isFavourite}
-									handleEdit={this.handleEditItem}
-									handleDelete={this.handleDeleteItem}
-									handleFavourite={this.handleFavouriteItem}
+									handleEdit={this.handleEditItem(item)}
+									handleDelete={this.handleDeleteItem(item)}
+									handleFavourite={this.handleFavouriteItem(item)}
 								/>
 							}
 						/>
 					))}
 				</ListItemContent>
-				<AddOrEditItemModal itemData={itemData} actionType="edit" open={open} handleClose={this.handleCloseModal} />
 			</S.ListItemPage>
 		);
 	}
@@ -187,16 +174,16 @@ export const mapDispatchToProps = dispatch => {
 		deleteItem: itemId => {
 			dispatch(deleteItem(itemId));
 		},
-		getItem: itemId => {
-			dispatch(getItem(itemId));
+		openModal: payload => {
+			dispatch(openModal(payload));
 		}
 	};
 };
 
 export const mapStateToProps = createStructuredSelector({
-	items: listItemsSelector,
-	itemData: itemDetailSelector,
-	error: errorSelector
+	items: filteredItemsSelector,
+	error: errorSelector,
+	filterParams: filterParamsSelector
 });
 
 export default connect(

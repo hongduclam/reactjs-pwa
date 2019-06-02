@@ -38,6 +38,7 @@ S.Item = styled.div`
 
 S.ItemInfo = styled(FlexDiv)`
 	background-color: white;
+	justify-content: space-between;
 	p:first-child {
 		padding-right: 1em;
 	}
@@ -56,6 +57,24 @@ S.ItemDescription = styled.div`
 		letter-spacing: -0.58px;
 		line-height: 29px;
 		margin: 0.5em 0;
+		height: 58px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		-webkit-line-clamp: 2;
+	}
+	p {
+		height: ${60}px;
+		display: block; /* Fallback for non-webkit */
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		max-width: 400px;
+		margin: 0 auto;
+		font-size: 14px;
+		line-height: 1.4;
+
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 `;
 

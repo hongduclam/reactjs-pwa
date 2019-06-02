@@ -1,11 +1,22 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import { push } from "react-router-redux";
 import styled from "styled-components";
 import { Modal, Input, Select, TextArea, PrimaryButton, CheckIcon } from "../../../components";
 import { createStructuredSelector } from "reselect";
-import { itemDetailSelector, addItem, updateItem } from "../../../services/nasa-collection";
+import {
+	addItem,
+	updateItem,
+	isOpenModalSelector,
+	actionTypeSelector,
+	closeModal,
+	formDataSelector,
+	formControlChange,
+	filterParamsSelector,
+	filterItems
+} from "../../../services/nasa-collection";
+import { ACTION_TYPE } from "../../../constants";
 
 const S = {};
 S.ModalContent = styled.div``;
@@ -23,60 +34,79 @@ S.FormGroup = styled.div`
 const typeOpts = [{ text: "Image", value: `image` }, { text: "Video", value: `video` }];
 
 class AddOrEditItemModal extends PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			itemData: {
-				...props.itemData
-			}
-		};
-		this.isEdit = props.actionType === "edit";
-	}
-
 	handleFormAction = () => {
-		const { itemData } = this.state;
-		if (this.isEdit) {
-			this.props.updateItem(itemData.itemId, itemData);
+		const { formData, filterParams } = this.props;
+		if (this.isEdit()) {
+			this.props.updateItem(formData.itemId, formData);
+			this.handleCloseModal();
+			this.props.handleReloadPageList(filterParams);
 		} else {
-			this.props.addItem(itemData);
+			this.props.addItem({
+				...formData,
+				isFavourite: false
+			});
+			this.handleCloseModal();
+			this.props.gotoListPage();
 		}
 	};
 
+	isEdit = () => {
+		return this.props.actionType === ACTION_TYPE.EDIT;
+	};
+
+	handleCloseModal = () => {
+		this.props.closeModal();
+	};
+
 	handleControlChange = ({ currentTarget: { name, value } }) => {
-		this.setState({
-			itemData: {
-				[name]: value
-			}
-		});
+		this.props.handleControlChange({ name, value });
 	};
 
 	render() {
-		const { open, handleClose } = this.props;
 		const {
-			itemData: { title, description, type, previewImgLink, previewFileUrl }
-		} = this.state;
+			isOpenModal,
+			formData: { title, description, type, previewImgLink, previewFileUrl }
+		} = this.props;
+		if (!isOpenModal) return null;
 
-		const modalTitle = this.isEdit ? `Edit` : `Add to collection`;
-		const primaryBtnLabel = this.isEdit ? `Save` : `Add to collection`;
+		const modalTitle = this.isEdit() ? `Edit` : `Add to collection`;
+		const primaryBtnLabel = this.isEdit() ? `Save` : `Add to collection`;
 
 		return (
-			<Modal open={open} title={modalTitle} onClose={handleClose}>
+			<Modal open={isOpenModal} title={modalTitle} onClose={this.handleCloseModal}>
 				<S.ModalContent>
 					<S.FormGroup>
-						<Input label={`Title`} name="title" value={title} />
+						<Input label={`Title`} name="title" value={title} onChange={this.handleControlChange} />
 					</S.FormGroup>
 					<S.FormGroup>
-						<TextArea label={`Description`} name="description" value={description} />
+						<TextArea
+							label={`Description`}
+							name="description"
+							value={description}
+							onChange={this.handleControlChange}
+						/>
 					</S.FormGroup>
 					<S.FormGroup>
 						<Select onChange={this.handleControlChange} value={type} options={typeOpts} name="type" label="Type" />
 					</S.FormGroup>
 					<S.FormGroup>
-						<Input label={`Link preview image url`} required name="previewImgLink" value={previewImgLink} />
+						<Input
+							onChange={this.handleControlChange}
+							label={`Link preview image url`}
+							required
+							name="previewImgLink"
+							value={previewImgLink}
+						/>
 					</S.FormGroup>
 					{type === "video" && (
 						<S.FormGroup>
-							<Input label={`Link file url`} required name="previewFileUrl" value={previewFileUrl} />
+							<Input
+								onChange={this.handleControlChange}
+								label={`Link file url`}
+								required
+								name="previewFileUrl"
+								value={previewFileUrl}
+							/>
 						</S.FormGroup>
 					)}
 				</S.ModalContent>
@@ -96,19 +126,36 @@ export const mapDispatchToProps = dispatch => {
 		addItem: formData => {
 			dispatch(addItem(formData));
 		},
+		handleControlChange: payload => {
+			dispatch(formControlChange(payload));
+		},
 		updateItem: (itemId, formData) => {
 			dispatch(updateItem({ itemId, formData }));
+		},
+		closeModal: () => {
+			dispatch(closeModal());
+		},
+		gotoListPage: () => {
+			dispatch(push(""));
+		},
+		handleReloadPageList: filterParams => {
+			dispatch(filterItems(filterParams));
 		}
 	};
 };
 
 export const mapStateToProps = createStructuredSelector({
-	// itemData: itemDetailSelector
+	isOpenModal: isOpenModalSelector,
+	actionType: actionTypeSelector,
+	formData: formDataSelector,
+	filterParams: filterParamsSelector
 });
 
 AddOrEditItemModal.propTypes = {};
 
-export default connect(
+const AddOrEditItemModalContainer = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(AddOrEditItemModal);
+
+export default AddOrEditItemModalContainer;

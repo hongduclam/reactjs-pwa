@@ -28,6 +28,7 @@ const S = {
 			border-radius: 3px;
 			padding-top: 0.8em;
 			padding-left: 0.5em;
+			background-color: white;
 		}
 		svg {
 			position: absolute;

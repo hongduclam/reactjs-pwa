@@ -41,3 +41,4 @@ export const Text = ({ variant, ...otherProps }) => {
 	}
 	return <C {...otherProps} />;
 };
+

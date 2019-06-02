@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { ThemeContext } from "../scenes";
 import { Button } from "./Button";
 import { Text } from "./Text";
 import { CloseIcon } from "./Icon";
 import { FlexDiv } from "./FlexDiv";
+import { BackDrop } from ".";
 
 const S = {};
 S.Modal = styled.div`
@@ -14,7 +14,7 @@ S.Modal = styled.div`
 	height: 80%;
 	width: 50%;
 	background: white;
-	z-index: 101;
+	z-index: 9999;
 	position: fixed;
 	margin: auto;
 	top: 5%;
@@ -40,28 +40,24 @@ const CloseButton = styled(Button)`
 S.ModalContent = styled.div``;
 
 export const Modal = ({ children, onClose, open, title }) => {
-	const { handleToggleBackDrop } = useContext(ThemeContext);
-	useEffect(() => {
-		if (open) {
-			handleToggleBackDrop(true);
-		}
-	});
-	const handleOnClose = () => {
-		handleToggleBackDrop(false);
-		onClose();
-	};
+	if (typeof open !== "boolean") {
+		return null;
+	}
 	return (
 		open &&
 		ReactDOM.createPortal(
-			<S.Modal>
-				<S.ModalHeader>
-					<Text variant="title">{title}</Text>
-					<CloseButton onClick={handleOnClose}>
-						<CloseIcon />
-					</CloseButton>
-				</S.ModalHeader>
-				<S.ModalContent>{children}</S.ModalContent>
-			</S.Modal>,
+			<React.Fragment>
+				<BackDrop show={open} />
+				<S.Modal>
+					<S.ModalHeader>
+						<Text variant="title">{title}</Text>
+						<CloseButton onClick={onClose}>
+							<CloseIcon />
+						</CloseButton>
+					</S.ModalHeader>
+					<S.ModalContent>{children}</S.ModalContent>
+				</S.Modal>
+			</React.Fragment>,
 			document.body
 		)
 	);

@@ -3,28 +3,31 @@ import {
 	RESET,
 	SEARCH_ITEM,
 	ADD_ITEM,
-	GET_ITEM,
 	UPDATE_ITEM,
 	DELETE_ITEM,
-	UPDATE_FAVOURITE_ITEM
+	UPDATE_FAVOURITE_ITEM,
+	OPEN_MODAL,
+	CLOSE_MODAL,
+	FORM_CONTROL_CHANGE,
+	SEARCH_QUERY_CHANGE
 } from "./nasaCollection.types";
-import { filterItems } from "./nasaCollection.services";
+import { filterItems, transformSeachedItem } from "./nasaCollection.services";
 import { cloneDeep } from "lodash";
+import { FILLTER_PARAM_DEFAULT } from "../../constants";
 
 const initState = {
 	error: null,
-	listItems: [
-		{
-			description: "Cassini and Chandrayaan-1 Agree",
-			title: "Cassini and Chandrayaan-1 Agree",
-			creator: "NASA/ISRO/JPL-Caltech/USGS/Brown Univ.",
-			id: "PIA12227",
-			dateCreated: "2009-09-24T18:00:14Z",
-			imgThumbUrl: "https://images-assets.nasa.gov/image/PIA12227/PIA12227~thumb.jpg"
-		}
-	],
+	listItems: [],
 	searchedItems: [],
-	itemDetail: null
+	filteredItems: [],
+	formData: {},
+	isOpenModal: false,
+	actionType: null,
+	searchQuery: "",
+	resultMessage: "",
+	filterParams: {
+		...FILLTER_PARAM_DEFAULT
+	}
 };
 
 export const nasaCollectionReducer = (state = initState, action) => {
@@ -34,12 +37,25 @@ export const nasaCollectionReducer = (state = initState, action) => {
 		case FILTER_ITEM:
 			const filteredItems = filterItems(listItems, action.payload);
 			return Object.assign({}, state, {
-				listItems: [...filteredItems]
+				filteredItems: [...filteredItems],
+				filterParams: {
+					...action.payload
+				}
+			});
+		case SEARCH_ITEM.START:
+			return Object.assign({}, state, {
+				resultMessage: "",
+				searchedItems: []
 			});
 		case SEARCH_ITEM.SUCCESS:
+			const searchedItems = transformSeachedItem(action.payload, state.listItems);
+			const resultTotal = searchedItems.length;
+			const resultMessage = `${resultTotal} Result${resultTotal > 0 ? "s" : ""} for ${state.searchQuery} `;
 			return Object.assign({}, state, {
-				searchedItems: [...action.payload]
+				searchedItems,
+				resultMessage
 			});
+
 		case ADD_ITEM:
 			return Object.assign({}, state, {
 				listItems: [...listItems, action.payload]
@@ -52,19 +68,43 @@ export const nasaCollectionReducer = (state = initState, action) => {
 				listItems: [...listItems]
 			});
 		case UPDATE_FAVOURITE_ITEM:
-			idx = listItems.findIndex(item => item.itemId === itemId);
+			idx = listItems.findIndex(item => item.itemId === action.payload);
 			listItems[idx].isFavourite = !listItems[idx].isFavourite;
 			return Object.assign({}, state, {
 				listItems: [...listItems]
 			});
 		case DELETE_ITEM:
 			return Object.assign({}, state, {
-				listItems: listItems.filter(item => item.id !== action.payload.itemId)
+				listItems: listItems.filter(item => item.itemId !== action.payload)
 			});
-		case GET_ITEM:
-			const item = state.allItems.find(item => item.itemId === action.payload.itemId);
+
+		case OPEN_MODAL:
+			const { selectedItem, actionType } = action.payload;
 			return Object.assign({}, state, {
-				itemDetail: { ...item }
+				formData: { ...selectedItem },
+				actionType,
+				isOpenModal: true
+			});
+
+		case CLOSE_MODAL:
+			return Object.assign({}, state, {
+				formData: {},
+				actionType: null,
+				isOpenModal: false
+			});
+
+		case FORM_CONTROL_CHANGE:
+			const { name, value } = action.payload;
+			return Object.assign({}, state, {
+				formData: {
+					...state.formData,
+					[name]: value
+				}
+			});
+
+		case SEARCH_QUERY_CHANGE:
+			return Object.assign({}, state, {
+				searchQuery: action.payload
 			});
 		case RESET:
 			return initState;

@@ -5,7 +5,11 @@ import {
 	UPDATE_ITEM,
 	DELETE_ITEM,
 	GET_ITEM,
-	UPDATE_FAVOURITE_ITEM
+	UPDATE_FAVOURITE_ITEM,
+	OPEN_MODAL,
+	CLOSE_MODAL,
+	FORM_CONTROL_CHANGE,
+	SEARCH_QUERY_CHANGE
 } from "./nasaCollection.types";
 
 export const filterItems = payload => {
@@ -73,6 +77,34 @@ export const searchItem = {
 export const updateFavouriteItem = payload => {
 	return {
 		type: UPDATE_FAVOURITE_ITEM,
+		payload
+	};
+};
+
+export const openModal = payload => {
+	return {
+		type: OPEN_MODAL,
+		payload
+	};
+};
+
+export const closeModal = payload => {
+	return {
+		type: CLOSE_MODAL,
+		payload
+	};
+};
+
+export const formControlChange = payload => {
+	return {
+		type: FORM_CONTROL_CHANGE,
+		payload
+	};
+};
+
+export const searchQueryChange = payload => {
+	return {
+		type: SEARCH_QUERY_CHANGE,
 		payload
 	};
 };
