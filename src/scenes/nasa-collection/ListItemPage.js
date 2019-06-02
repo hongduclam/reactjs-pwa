@@ -138,7 +138,7 @@ class ListItemPage extends React.PureComponent {
 					<NavLink to="/add">
 						<PrimaryButton>
 							<PlusIcon />
-							{`Add new item`}
+							<span>{`Add new item`}</span>
 						</PrimaryButton>
 					</NavLink>
 				</S.ListItemHeader>

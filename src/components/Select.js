@@ -32,7 +32,7 @@ const S = {
 		}
 		svg {
 			position: absolute;
-			left: 95%;
+			left: calc(100% - 2rem);
 			top: 1.8em;
 			color: #ceced2;
 			g {

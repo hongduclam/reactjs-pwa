@@ -6,13 +6,14 @@ import { ThemeContext } from "../..";
 
 const S = {};
 S.Item = styled.div`
-	width: 18.75em;
+	width: 13.75em;
 	flex-basis: calc(25% - 1em);
 	position: relative;
 	box-sizing: border-box;
 	margin: 0.5em;
 
 	@media (max-width: 62em) {
+		width: 12.75em;
 		flex-basis: calc(33.33% - 1em);
 		p {
 			font-size: 0.5em;
@@ -20,6 +21,7 @@ S.Item = styled.div`
 	}
 
 	@media (max-width: 30em) {
+		width: 7.75em;
 		flex-basis: calc(50% - 1em);
 		p {
 			font-size: 0.5em;
@@ -33,6 +35,7 @@ S.Item = styled.div`
 			font-size: 0.5em;
 		}
 		margin: 0.2em;
+		width: 6.75em;
 	}
 `;
 

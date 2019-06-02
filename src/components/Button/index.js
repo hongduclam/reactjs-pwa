@@ -28,6 +28,14 @@ export const PrimaryButton = styled(Button)`
 	svg {
 		padding-right: 1em;
 	}
+	@media (max-width: 30em) {
+		span {
+			display: none;
+		}
+		svg {
+			padding-right: 0;
+		}
+	}
 `;
 
 export const ActionButton = styled(Button)`
