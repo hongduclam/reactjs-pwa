@@ -73,7 +73,7 @@
     "typescript": "3.3.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "node server",
     "build": "node scripts/build.js",
     "deploy": "node scripts/build.js && node server",
     "test": "node scripts/test.js --env=jsdom"
