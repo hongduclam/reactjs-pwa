@@ -3,16 +3,15 @@ import { orderBy } from "lodash";
 export const filterItems = (listItems, payload) => {
 	const {
 		page: { index, size },
-		sortBy: { title: sortByTitle, date: sortByDate },
-		searchBy: { title: searchByTitle, date: searchByDate, favorite: searchByFavorite }
+		searchByTitle, searchByDate, searchByFavourite, sortBy
 	} = payload;
 	const pageItems = listItems.slice(index * size, (index + 1) * size);
 	const filteredItems = pageItems.filter(item => {
-		const isSearchByTitle = item.title && item.title.toLowerCase().includes(searchByTitle.toLowerCase());
-		const isSearchByFavorite = item.isFavourite === !!searchByFavorite;
+		const isSearchByTitle = searchByTitle && item.title && item.title.toLowerCase().includes(searchByTitle.toLowerCase());
+		const isSearchByFavorite = searchByFavourite && item.isFavourite.toString() === searchByFavourite.toString();
 		return isSearchByTitle || item.dateCreated === searchByDate || isSearchByFavorite;
 	});
-	return orderBy(filteredItems, ["title", "dateCreated"], [sortByTitle, sortByDate]);
+	return orderBy(filteredItems, [sortBy], ["desc"]);
 };
 
 export const transformSeachedItem = (data, listItems) => {

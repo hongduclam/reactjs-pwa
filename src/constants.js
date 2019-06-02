@@ -12,6 +12,8 @@ export const ACTION_TYPE = {
 
 export const FILLTER_PARAM_DEFAULT = {
 	page: { index: 0, size: 20 },
-	sortBy: { title: "asc", date: "desc" },
-	searchBy: { title: "", date: "", favorite: "" }
+	searchByTitle: "",
+	searchByDate: "",
+	searchByFavourite: false,
+	sortBy: "title"
 };
