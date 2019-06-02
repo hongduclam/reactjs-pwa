@@ -89,7 +89,7 @@ S.ItemAction = styled(FlexDiv)`
 	margin: 0.5em 0;
 `;
 
-export const Item = ({ imgThumbUrl, dateCreated, creator, title, description, actionComponent }) => {
+export const Item = ({ previewImgLink, dateCreated, creator, title, description, actionComponent }) => {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const { handleToggleBackDrop } = useContext(ThemeContext);
 	const handleImgClick = () => {
@@ -100,7 +100,7 @@ export const Item = ({ imgThumbUrl, dateCreated, creator, title, description, ac
 	return (
 		<S.Item>
 			<S.ItemImage isFullscreen={isFullscreen}>
-				<img src={imgThumbUrl} alt={`${title}`} onClick={handleImgClick} />
+				<img src={previewImgLink} alt={`${title}`} onClick={handleImgClick} />
 			</S.ItemImage>
 			<S.ItemInfo>
 				<Text variant="small" color="#000000">
@@ -124,7 +124,7 @@ export const Item = ({ imgThumbUrl, dateCreated, creator, title, description, ac
 };
 
 Item.defaultProps = {
-	imgThumbUrl: "",
+	previewImgLink: "",
 	dateCreated: "",
 	creator: "",
 	title: "",
@@ -132,7 +132,7 @@ Item.defaultProps = {
 };
 
 Item.propTypes = {
-	imgThumbUrl: PropTypes.string,
+	previewImgLink: PropTypes.string,
 	dateCreated: PropTypes.string,
 	creator: PropTypes.string,
 	title: PropTypes.string,

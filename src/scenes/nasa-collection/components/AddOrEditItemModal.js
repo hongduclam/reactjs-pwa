@@ -103,7 +103,7 @@ export const mapDispatchToProps = dispatch => {
 };
 
 export const mapStateToProps = createStructuredSelector({
-	itemData: itemDetailSelector
+	// itemData: itemDetailSelector
 });
 
 AddOrEditItemModal.propTypes = {};

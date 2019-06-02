@@ -23,19 +23,18 @@ const initState = {
 			imgThumbUrl: "https://images-assets.nasa.gov/image/PIA12227/PIA12227~thumb.jpg"
 		}
 	],
-	allItems: [],
 	searchedItems: [],
-	itemDetail: null,
+	itemDetail: null
 };
 
 export const nasaCollectionReducer = (state = initState, action) => {
-	const { allItems, listItems } = state;
-	let allItemsCloned, idx;
+	let listItems = cloneDeep(state.listItems);
+	let idx;
 	switch (action.type) {
 		case FILTER_ITEM:
-			const filteredItems = filterItems(allItems, action.payload);
+			const filteredItems = filterItems(listItems, action.payload);
 			return Object.assign({}, state, {
-				listItems: [...listItems, ...filteredItems]
+				listItems: [...filteredItems]
 			});
 		case SEARCH_ITEM.SUCCESS:
 			return Object.assign({}, state, {
@@ -43,26 +42,24 @@ export const nasaCollectionReducer = (state = initState, action) => {
 			});
 		case ADD_ITEM:
 			return Object.assign({}, state, {
-				allItems: [...allItems, action.payload]
+				listItems: [...listItems, action.payload]
 			});
 		case UPDATE_ITEM:
 			const { itemId, formData } = action.payload;
-			allItemsCloned = cloneDeep(allItems);
-			idx = allItemsCloned.findIndex(item => item.itemId === itemId);
-			allItemsCloned[idx] = { ...allItemsCloned[idx], ...formData };
+			idx = listItems.findIndex(item => item.itemId === itemId);
+			listItems[idx] = { ...listItems[idx], ...formData };
 			return Object.assign({}, state, {
-				allItems: [...allItemsCloned]
+				listItems: [...listItems]
 			});
 		case UPDATE_FAVOURITE_ITEM:
-			allItemsCloned = cloneDeep(allItems);
-			idx = allItemsCloned.findIndex(item => item.itemId === itemId);
-			allItemsCloned[idx].isFavourite = !allItemsCloned[idx].isFavourite;
+			idx = listItems.findIndex(item => item.itemId === itemId);
+			listItems[idx].isFavourite = !listItems[idx].isFavourite;
 			return Object.assign({}, state, {
-				allItems: [...allItemsCloned]
+				listItems: [...listItems]
 			});
 		case DELETE_ITEM:
 			return Object.assign({}, state, {
-				allItems: allItems.filter(item => item.id !== action.payload.itemId)
+				listItems: listItems.filter(item => item.id !== action.payload.itemId)
 			});
 		case GET_ITEM:
 			const item = state.allItems.find(item => item.itemId === action.payload.itemId);

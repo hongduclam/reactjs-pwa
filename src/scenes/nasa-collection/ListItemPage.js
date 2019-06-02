@@ -134,6 +134,11 @@ class ListItemPage extends React.PureComponent {
 		this.filterParams.page.index = this.filterParams.page.index + 1;
 		this.props.filterItems(this.filterParams);
 	};
+	handleCloseModal = () => {
+		this.setState({
+			open: false
+		});
+	};
 
 	render() {
 		const { items, itemData } = this.props;

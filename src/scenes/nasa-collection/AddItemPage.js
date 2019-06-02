@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Button, BackIcon, Text, ActionButton, PlusIcon } from "../../components";
 import { ListItemContent } from "./ListItemPage";
 import { Item } from "./components/Item";
-import { itemDetailSelector, getItem, searchItem } from "../../services/nasa-collection";
+import { itemDetailSelector, getItem, searchItem, searchedItemsSelector } from "../../services/nasa-collection";
 import { createStructuredSelector } from "reselect";
 import AddOrEditItemModal from "./components/AddOrEditItemModal";
 
@@ -105,7 +105,8 @@ class AddItemPage extends PureComponent {
 		super(props);
 		this.state = {
 			searchQuery: "",
-			openModal: false
+			openModal: false,
+			itemData: null
 		};
 	}
 
@@ -121,20 +122,21 @@ class AddItemPage extends PureComponent {
 
 	handleCloseModal = () => {
 		this.setState({
-			openModal: false
+			openModal: false,
+			itemData: null
 		});
 	};
 
-	handleAddItem = itemId => {
-		this.props.getItem(itemId);
+	handleAddItem = itemData => {
 		this.setState({
-			openModal: true
+			openModal: true,
+			itemData: { ...itemData, isAdded: true }
 		});
 	};
 
 	render() {
-		const { searchedItems, itemData } = this.props;
-		const { searchQuery, openModal } = this.state;
+		const { searchedItems } = this.props;
+		const { searchQuery, openModal, itemData } = this.state;
 		const resultTotal = searchedItems.length;
 		return (
 			<S.AddItemPage>
@@ -164,12 +166,19 @@ class AddItemPage extends PureComponent {
 							<Item
 								{...item}
 								key={`item-key-${item.id}-${index}`}
-								actionComponent={<ItemAction handleAdd={this.handleAddItem} />}
+								actionComponent={<ItemAction handleClick={() => this.handleAddItem(item)} />}
 							/>
 						))}
 					</ListItemContent>
 				</S.ResultContent>
-				<AddOrEditItemModal itemData={itemData} actionType="add" open={openModal} handleClose={this.handleCloseModal} />
+				{openModal && (
+					<AddOrEditItemModal
+						itemData={itemData}
+						actionType="add"
+						open={openModal}
+						handleClose={this.handleCloseModal}
+					/>
+				)}
 			</S.AddItemPage>
 		);
 	}
@@ -193,7 +202,8 @@ export const mapDispatchToProps = dispatch => {
 };
 
 export const mapStateToProps = createStructuredSelector({
-	itemData: itemDetailSelector
+	// itemData: itemDetailSelector,
+	searchedItems: searchedItemsSelector
 });
 
 export default connect(
