@@ -1,6 +1,6 @@
 # React PWA Nasa Collection App
 ## Demo
-* [https://ns-app.herokuapp.com](Demo app)
+* [Link demo](https://ns-app.herokuapp.com)
 ## Description
 * React version 16.4.8
 * CRUD Nasa Collection Item
