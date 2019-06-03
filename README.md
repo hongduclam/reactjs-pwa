@@ -1,11 +1,13 @@
-# React Redux Sample App
+# React PWA Nasa Collection App
+## Demo
+* [https://ns-app.herokuapp.com](Demo app)
+## Description
 * React version 16.4.8
-* Redux
+* CRUD Nasa Collection Item
+* Persist data to localStorage
 * Responsive design by [https://www.styled-components.com](https://www.styled-components.com)
-* Pulling data from [https://api.giphy.com/v1/gifs/trending](https://api.giphy.com/v1/gifs/trending)
-* Loading more 20 items by scrolling to end of page
-* Showing full screen when clicking on the image
-* Unit test with [Jest](https://jestjs.io/)
+* Pulling data from [https://images-api.nasa.gov](https://images-api.nasa.gov)
+* Deploy by ExpreeJS on Heroku
 
 ## Installation
 
@@ -21,14 +23,17 @@ yarn or npm install
 yarn test
 ```
 
+* Deploy
+
+```bash
+yarn build && node server
+```
+
 ## Usage
 
 ```
 yarn start or npm start
 ```
-
-## Demo
-* [https://lam-reactjs-sample.herokuapp.com](https://lam-reactjs-sample.herokuapp.com)
 
 ## Resources
 + [Folder structure](https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1)
