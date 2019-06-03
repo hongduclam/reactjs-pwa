@@ -11,6 +11,7 @@ S.Item = styled.div`
 	position: relative;
 	box-sizing: border-box;
 	margin: 0.5em;
+	padding: 0.5em;
 	&:hover {
 		-webkit-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
 		-moz-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);

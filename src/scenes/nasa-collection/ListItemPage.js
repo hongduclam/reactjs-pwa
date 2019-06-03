@@ -61,6 +61,10 @@ S.FilterContent = styled(FlexDiv)`
 S.ItemAction = styled(FlexDiv)`
 	justify-content: space-between;
 	width: 10em;
+	@media (max-width: 30em) {
+		width: 100%;
+	}
+	
 `;
 
 const Title = styled.h1`
@@ -169,7 +173,7 @@ class ListItemPage extends React.PureComponent {
 						label={`Is favourite`}
 						name="searchByFavourite"
 						value={searchByFavourite}
-						options={[{ text: "Yes", value: true }, { text: "No", value: false }]}
+						options={[{ text: "All", value: -1 }, { text: "Yes", value: 1 }, { text: "No", value: 0 }]}
 					/>
 
 					<Select
