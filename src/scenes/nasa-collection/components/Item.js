@@ -11,6 +11,11 @@ S.Item = styled.div`
 	position: relative;
 	box-sizing: border-box;
 	margin: 0.5em;
+	&:hover {
+		-webkit-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
+		-moz-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
+		box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
+	}
 
 	@media (max-width: 62em) {
 		width: 12.75em;
@@ -119,7 +124,7 @@ export const Item = ({ previewImgLink, dateCreated, creator, title, description,
 		handleToggleBackDrop(!isFullscreen);
 		setIsFullscreen(!isFullscreen);
 	};
-	const formatDate = new Date(dateCreated).toDateString()
+	const formatDate = new Date(dateCreated).toDateString();
 	return (
 		<S.Item>
 			<S.ItemImage isFullscreen={isFullscreen}>
