@@ -12,9 +12,9 @@ S.Item = styled.div`
 	box-sizing: border-box;
 	margin: 0.5em;
 	&:hover {
-		-webkit-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
-		-moz-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
-		box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.75);
+		-webkit-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
+		-moz-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
+		box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
 	}
 
 	@media (max-width: 62em) {
