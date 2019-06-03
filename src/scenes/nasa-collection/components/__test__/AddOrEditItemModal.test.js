@@ -1,8 +1,8 @@
 import { shallow } from "enzyme";
 import React from "react";
-import { TrendingItemPage } from "../../TrendingItemPage";
+import { AddOrEditItemModal } from "../../AddOrEditItemModal";
 
-describe("<TrendingItemPage />", () => {
+describe("<AddOrEditItemModal />", () => {
 	global.window = {
 		innerHeight: 100
 	};
@@ -18,7 +18,7 @@ describe("<TrendingItemPage />", () => {
 	let componentWrapper = null;
 	const getComponent = () => {
 		if (!componentWrapper) {
-			componentWrapper = shallow(<TrendingItemPage {...props} />);
+			componentWrapper = shallow(<AddOrEditItemModal {...props} />);
 		}
 
 		return componentWrapper;
@@ -38,7 +38,7 @@ describe("<TrendingItemPage />", () => {
 	it("Should render correctly", () => {
 		const wrapper = getComponent();
 		expect(wrapper.find("BlockUi")).toHaveLength(1);
-		expect(wrapper.find("TrendingItemPageWrapper")).toHaveLength(1);
+		expect(wrapper.find("AddOrEditItemModalWrapper")).toHaveLength(1);
 		expect(wrapper.find("ListItemsWrapper")).toHaveLength(1);
 		expect(wrapper.find("BackDropWrapper")).toHaveLength(1);
 		expect(wrapper.find("ErrorBoundary")).toHaveLength(1);
