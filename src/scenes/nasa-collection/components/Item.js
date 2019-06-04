@@ -116,6 +116,13 @@ S.ItemImage = styled.div`
 S.ItemAction = styled(FlexDiv)`
 	justify-content: flex-start;
 	margin: 0.5em 0;
+	@media (max-width: 30em) {
+		 span {
+			font-size: 0.8em;
+			padding-left: 0.4em;
+			padding-right: 0;
+		}
+	}
 `;
 
 export const Item = ({ previewImgLink, dateCreated, creator, title, description, actionComponent }) => {
