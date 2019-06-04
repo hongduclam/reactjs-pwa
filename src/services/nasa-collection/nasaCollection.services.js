@@ -8,7 +8,7 @@ export const filterItems = (listItems, payload) => {
 	const pageItems = listItems.slice(index * size, (index + 1) * size);
 	const filteredItems = pageItems.filter(item => {
 		const isSearchByTitle = searchByTitle && item.title && item.title.toLowerCase().includes(searchByTitle.toLowerCase());
-		const isSearchByFavorite = searchByFavourite && item.isFavourite.toString() === searchByFavourite.toString();
+		const isSearchByFavorite = !searchByTitle && (Number(searchByFavourite) === -1 || (item.isFavourite === !!Number(searchByFavourite)))
 		return isSearchByTitle || item.dateCreated === searchByDate || isSearchByFavorite;
 	});
 	return orderBy(filteredItems, [sortBy], ["desc"]);

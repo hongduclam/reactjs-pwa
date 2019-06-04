@@ -14,6 +14,6 @@ export const FILLTER_PARAM_DEFAULT = {
 	page: { index: 0, size: 20 },
 	searchByTitle: "",
 	searchByDate: "",
-	searchByFavourite: false,
+	searchByFavourite: -1,
 	sortBy: "title"
 };

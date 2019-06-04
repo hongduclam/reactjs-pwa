@@ -11,6 +11,7 @@ S.Item = styled.div`
 	position: relative;
 	box-sizing: border-box;
 	margin: 0.5em;
+	padding: 0.5em;
 	&:hover {
 		-webkit-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
 		-moz-box-shadow: 2px 0px 5px 8px rgba(0, 0, 0, 0.32);
@@ -115,6 +116,13 @@ S.ItemImage = styled.div`
 S.ItemAction = styled(FlexDiv)`
 	justify-content: flex-start;
 	margin: 0.5em 0;
+	@media (max-width: 30em) {
+		 span {
+			font-size: 0.8em;
+			padding-left: 0.4em;
+			padding-right: 0;
+		}
+	}
 `;
 
 export const Item = ({ previewImgLink, dateCreated, creator, title, description, actionComponent }) => {

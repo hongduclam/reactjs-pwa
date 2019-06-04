@@ -21,6 +21,7 @@ import {
 import { createStructuredSelector } from "reselect";
 
 import { ACTION_TYPE } from "../../constants";
+import { debounce } from "../../services/layout";
 
 const S = {};
 
@@ -120,12 +121,12 @@ class AddItemPage extends PureComponent {
 		this.props.handleSearchQueryChange(value);
 	};
 
-	handleSearchItem = () => {
+	handleSearchItem = debounce(e => {
 		const { searchQuery } = this.props;
 		if (searchQuery) {
 			this.props.searchItem(searchQuery);
 		}
-	};
+	}, 1000);
 
 	handleAddItem = itemData => event => {
 		if (!itemData.isAdded) {
@@ -161,7 +162,7 @@ class AddItemPage extends PureComponent {
 							placeholder={`Type something to search...`}
 							value={searchQuery}
 							onChange={this.handleInputChange}
-							onBlur={this.handleSearchItem}
+							onKeyUp={this.handleSearchItem}
 						/>
 					</S.SearchContent>
 					<S.ResultContent>
